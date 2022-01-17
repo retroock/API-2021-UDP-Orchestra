@@ -106,13 +106,13 @@ When you connect to the TCP interface of the **Auditor**, you should receive an 
 |Question | How can we represent the system in an **architecture diagram**, which gives information both about the Docker containers, the communication protocols and the commands? |
 | | *Insert your diagram here...* |
 |Question | Who is going to **send UDP datagrams** and **when**? |
-| | *Enter your response here...* |
+| | Les containers musiciens vont envoyer des datagrames UDP toutes les une seconde. |
 |Question | Who is going to **listen for UDP datagrams** and what should happen when a datagram is received? |
-| | *Enter your response here...* |
+| | Le container auditeur se mettra en écoute afin de récupérer les paquets UDP envoyé par les musiciens. Lorsqu'il en reçoit un, il ajoutera dans un tableau JSON le musicien (si celui-ci n'est pas déjà présent sinon rien ne sera fait). |
 |Question | What **payload** should we put in the UDP datagrams? |
-| | *Enter your response here...* |
+| | Le bruit de l'instrument de musique.  L'id du container ? La date d'activation ? |
 |Question | What **data structures** do we need in the UDP sender and receiver? When will we update these data structures? When will we query these data structures? |
-| | *Enter your response here...* |
+| | Pour le sender nous aurons un tableau JSON que nous enverrons au receiver. Ces données n'auront pas besoin d'être mise à jour car elle sont liées au container et elle ne change pas dans le temps (instrument, uuid et depuis quand le container est lancé). Pour le receiver, il contiendra aussi un tableau en JSON qu'il faudra mettre à jour à chaque fois qu'un nouveau musicien arrive ou part. Nous allons lorsque nous nous connectons au receiver (sur le port 2205) demander au serveur de nous envoyer la liste des musiciens présent. |
 
 
 ## Task 2: implement a "musician" Node.js application
