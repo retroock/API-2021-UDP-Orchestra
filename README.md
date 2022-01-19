@@ -122,19 +122,19 @@ When you connect to the TCP interface of the **Auditor**, you should receive an 
 |Question | In a JavaScript program, if we have an object, how can we **serialize it in JSON**? |
 | | *Enter your response here...*  |
 |Question | What is **npm**?  |
-| | *Enter your response here...*  |
+| | Il s'agit du gestionnaire de package par défaut pour la plateforme Node javascript. On va avoir accès à plusieurs commandes qui va permettre de choisir les packages que l'on souhaite (node_modules avec package.json utilisé dans le labo HTTP infra). |
 |Question | What is the `npm install` command and what is the purpose of the `--save` flag?  |
-| | *Enter your response here...*  |
+| | Cela va permettre d'installer un package et toute les dépendances de ce dernier. Le --save est utilisé afin de sauvegarder le package installé dans le fichier package.json. Si l'on possède une version de npm 5.0.0 ou plus récente, ce flag n'est plus nécessaire. (source : https://www.geeksforgeeks.org/what-is-the-meaning-of-save-for-npm-install/) |
 |Question | How can we use the `https://www.npmjs.com/` web site?  |
-| | *Enter your response here...*  |
+| | Ce site fonctionne un peu comme docker-hub. Il répertorie tous les packages disponible. Depuis la page du package nous allons pouvoir voir toutes les dépendances nécessaire à ce package, la commande à entrer avec npm afin de l'installer et encore plein d'autres informations. |
 |Question | In JavaScript, how can we **generate a UUID** compliant with RFC4122? |
-| | *Enter your response here...*  |
+| | Un package npm nommé `uuid` permet la génération d'un UUID qui respecte la norme RFC4122. |
 |Question | In Node.js, how can we execute a function on a **periodic** basis? |
-| | *Enter your response here...*  |
+| | La méthode `setInterval()` permet d'effectuer une action / exécuter une fonction après un temps donné. Il est d'ailleurs possible de stocker cet interval et de le supprimer plus tard dans le code. Il est important de noter que la première fois exécution de la fonction passée en paramètre aura lieu après le temps donné (donc pas d'exécution au temps t=0). |
 |Question | In Node.js, how can we **emit UDP datagrams**? |
-| | *Enter your response here...*  |
+| | Comme vu pendant le cours nous allons utiliser un module node.js nommé dgram qui va permettre d'utiliser des datagramme UDP avec le socket que nous utiliserons. |
 |Question | In Node.js, how can we **access the command line arguments**? |
-| | *Enter your response here...*  |
+| | `process.argv()` permet de récupérer les arguments de la ligne de commande sous forme de tableau. |
 
 
 ## Task 3: package the "musician" app in a Docker image
