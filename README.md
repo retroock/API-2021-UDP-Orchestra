@@ -104,13 +104,13 @@ When you connect to the TCP interface of the **Auditor**, you should receive an 
 | #  | Topic |
 | --- | --- |
 |Question | How can we represent the system in an **architecture diagram**, which gives information both about the Docker containers, the communication protocols and the commands? |
-| | *Insert your diagram here...* |
+| | ![image](images/Diagram.png) |
 |Question | Who is going to **send UDP datagrams** and **when**? |
-| | Les containers musiciens vont envoyer des datagrames UDP toutes les une seconde. |
+| | Les containers musiciens vont envoyer des datagrames UDP toutes les secondes. |
 |Question | Who is going to **listen for UDP datagrams** and what should happen when a datagram is received? |
 | | Le container auditeur se mettra en écoute afin de récupérer les paquets UDP envoyé par les musiciens. Lorsqu'il en reçoit un, il ajoutera dans un tableau JSON le musicien (si celui-ci n'est pas déjà présent sinon rien ne sera fait). |
 |Question | What **payload** should we put in the UDP datagrams? |
-| | Le bruit de l'instrument de musique.  L'id du container ? La date d'activation ? |
+| | Le bruit de l'instrument de musique, l'id du container. |
 |Question | What **data structures** do we need in the UDP sender and receiver? When will we update these data structures? When will we query these data structures? |
 | | Pour le sender nous aurons un tableau JSON que nous enverrons au receiver. Ces données n'auront pas besoin d'être mise à jour car elle sont liées au container et elle ne change pas dans le temps (instrument, uuid et depuis quand le container est lancé). Pour le receiver, il contiendra aussi un tableau en JSON qu'il faudra mettre à jour à chaque fois qu'un nouveau musicien arrive ou part. Nous allons lorsque nous nous connectons au receiver (sur le port 2205) demander au serveur de nous envoyer la liste des musiciens présent. |
 
@@ -120,7 +120,7 @@ When you connect to the TCP interface of the **Auditor**, you should receive an 
 | #  | Topic |
 | ---  | --- |
 |Question | In a JavaScript program, if we have an object, how can we **serialize it in JSON**? |
-| | *Enter your response here...*  |
+| | Nous pouvons utiliser la méthode : JSON.stringify(). |
 |Question | What is **npm**?  |
 | | Il s'agit du gestionnaire de package par défaut pour la plateforme Node javascript. On va avoir accès à plusieurs commandes qui va permettre de choisir les packages que l'on souhaite (node_modules avec package.json utilisé dans le labo HTTP infra). |
 |Question | What is the `npm install` command and what is the purpose of the `--save` flag?  |
@@ -142,17 +142,17 @@ When you connect to the TCP interface of the **Auditor**, you should receive an 
 | #  | Topic |
 | ---  | --- |
 |Question | How do we **define and build our own Docker image**?|
-| | *Enter your response here...*  |
+| | Pour créer l'image docker, il faut avoir un fichier Dockerfile configuré correctement (doit posséder une image de base, etc...). Ensuite afin de build l'image il faut ouvrir un terminal dans le même dossier que ce fichier et faire la commande `docker build -t nomDeLImage .`. |
 |Question | How can we use the `ENTRYPOINT` statement in our Dockerfile?  |
-| | *Enter your response here...*  |
+| | L'entrypoint fonctionne de la même manière que CMD, ce dernier va permettre d'exécuter une ligne de commande lors du lancement du container. Exemple : `ENTRYPOINT [ "node", "/opt/app/auditor.js" ]` |
 |Question | After building our Docker image, how do we use it to **run containers**?  |
-| | *Enter your response here...*  |
+| | Utiliser la commande `docker run -d nomDeLImage`. Rajouter `-p` permettra de faire du port mapping afin de pouvoir accéder au container depuis la machine hôte. |
 |Question | How do we get the list of all **running containers**?  |
-| | *Enter your response here...*  |
+| | `docker -ps`, utiliser `-a` afin de lister tous les containers. |
 |Question | How do we **stop/kill** one running container?  |
-| | *Enter your response here...*  |
+| | `docker stop nomDuContainer` va permettre d'arrêter un container en marche. `docker kill nomDuContainer` va permettre de supprimer un container qui n'est pas en état de marche. |
 |Question | How can we check that our running containers are effectively sending UDP datagrams?  |
-| | *Enter your response here...*  |
+| | On peut utiliser tcpdump ou wireshark. |
 
 
 ## Task 4: implement an "auditor" Node.js application
@@ -160,15 +160,15 @@ When you connect to the TCP interface of the **Auditor**, you should receive an 
 | #  | Topic |
 | ---  | ---  |
 |Question | With Node.js, how can we listen for UDP datagrams in a multicast group? |
-| | *Enter your response here...*  |
+| | Comme pour le musicien nous allons utiliser dgram afin de pouvoir écouter des paquets IP. Nous allons ensuite nous ajouter en tant que membre dans le groupe multicast (addMembership(adresse multicast)). |
 |Question | How can we use the `Map` built-in object introduced in ECMAScript 6 to implement a **dictionary**?  |
-| | *Enter your response here...* |
+| | Il s'agit d'un dictionnaire, chaque entrée de la Map contient un id unique et une valeur correspondante. Lorsque nous faisons un get(id), cela va chercher dans la Map si l'id est présent et nous retourner la valeur correspondante. |
 |Question | How can we use the `Moment.js` npm module to help us with **date manipulations** and formatting?  |
-| | *Enter your response here...* |
+| | Moment permet de faire des opérations (méthode add() par exemple), des comparaisons(isBefore ou isAfter) et du formatage de date. Ce qui est très pratique pour nous. |
 |Question | When and how do we **get rid of inactive players**?  |
-| | *Enter your response here...* |
+| | Après que l'auditeur n'ait pas reçu pendant 5 secondes un paquet d'un musicien. Nous allons stocker pour chaque musicien à qu'elle heure on reçoit son paquet, ensuite nous faisons une addition de 5 secondes et nous comparons si l'heure actuel est plus grande (utilisation de isBefore) que cette nouvelle heure calculée. Si elle est plus grande cela veut dire que le musicien envoie toujours des paquets, sinon on doit l'enlever de la liste. |
 |Question | How do I implement a **simple TCP server** in Node.js?  |
-| | *Enter your response here...* |
+| | Comme vu pendant le labo HTTP, il suffit d'utiliser express afin d'avoir accès aux différentes méthodes de gestion de serveurs comme listen(). |
 
 
 ## Task 5: package the "auditor" app in a Docker image
@@ -176,7 +176,7 @@ When you connect to the TCP interface of the **Auditor**, you should receive an 
 | #  | Topic |
 | ---  | --- |
 |Question | How do we validate that the whole system works, once we have built our Docker image? |
-| | *Enter your response here...* |
+| | En utilisant le script fournit et en faisant des tests de notre côté. Nous avons lancé 3 containers musiciens et un container auditor. En se connectant au site nous pouvions voir que les trois musiciens étaient détectés par l'auditor. Et lorsque nous avons éteint l'un des musiciens, il était détecté encore pendant 5 secondes et ensuite il disparaissait. Si on le rallumait il était instantanément rajouté dans la liste. |
 
 
 ## Constraints

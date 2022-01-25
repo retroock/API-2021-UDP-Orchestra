@@ -1,5 +1,6 @@
 //import { argv } from 'process';
 const { v4: uuidv4 } = require('uuid');
+
 // We use a standard Node.js module to work with UDP
 const  dgram = require('dgram');
 
@@ -17,10 +18,13 @@ const instrumentMap = new Map([
 
 const s = dgram.createSocket('udp4');
 console.log(process.argv);
+
 // Create a measure object and serialize it to JSON
 var musician = { uuid : uuid,
-				instrument : instruments[process.argv[2]],
-				activeSince : "osef"};
+				 instrument : instrumentMap.get(process.argv[2])
+			   };
+
+console.log(musician);
 
 var payload = JSON.stringify(musician);
 // Send the payload via UDP (multicast)

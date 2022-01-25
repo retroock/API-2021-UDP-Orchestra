@@ -36,14 +36,36 @@ function addUpdateMusician(data){
 	let delId = [];
 	for(let i = 0; i < musicians.length; i++){
 		if(musicians[i].uuid == data.uuid){
-			musicians[i].lastCall= moment().format();
+			musicians[i].lastCall= moment();
 			isNewMusician = false;
+		} else {
+			let check = moment(musicians[i].lastCall.format())
+			check.add(5, 'seconds')
+			
+			console.log(musicians[i].lastCall, check, moment(), check.isBefore(moment()))
+			if(check.isBefore(moment())){
+				delId.push(i);
+			}
 		}
-		//Test si plus vieux de 5 sec et si plus vieux rajouter l'id dans delId
 	}
 	if(isNewMusician){
-		musicians.push({uuid: data.uuid, instrument: instruments.get(data.instrument), activeSince: moment().format(), lastCall: moment().format()});
+		musicians.push({uuid: data.uuid, instrument: instruments.get(data.instrument), activeSince: moment(), lastCall: moment()});
+		console.log(musicians);
 	}
-	//Supprimer tous les musicians qui sont dans delId
-		
+	
+	console.log(delId);
+	
+	for(let i = 0; i < delId.length; i++){
+		musicians = musicians.slice(delId[i], 1);
+	}		
 }
+
+var express = require('express');
+var app = express();
+
+app.get('/', function(req, res){
+	res.send(musicians);
+});
+
+app.listen(PORT, function(){
+});
