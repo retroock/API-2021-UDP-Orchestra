@@ -32,32 +32,35 @@ s.on('message', function(msg, source) {
 });
 
 function addUpdateMusician(data){
+	console.log(data);
 	let isNewMusician = true;
-	let delId = [];
 	for(let i = 0; i < musicians.length; i++){
 		if(musicians[i].uuid == data.uuid){
 			musicians[i].lastCall= moment();
 			isNewMusician = false;
-		} else {
-			let check = moment(musicians[i].lastCall.format())
-			check.add(5, 'seconds')
-			
-			console.log(musicians[i].lastCall, check, moment(), check.isBefore(moment()))
-			if(check.isBefore(moment())){
-				delId.push(i);
-			}
 		}
 	}
 	if(isNewMusician){
 		musicians.push({uuid: data.uuid, instrument: instruments.get(data.instrument), activeSince: moment(), lastCall: moment()});
 		console.log(musicians);
 	}
-	
-	console.log(delId);
+}
+
+function checkMusiciansAlive(){	
+	let delId = [];
+	for(let i = 0; i < musicians.length; i++){
+		let check = moment(musicians[i].lastCall.format())
+		check.add(5, 'seconds')
+		if(check.isBefore(moment())){
+			delId.push(i);
+		}
+	}
 	
 	for(let i = 0; i < delId.length; i++){
-		musicians = musicians.slice(delId[i], 1);
-	}		
+		musicians.splice(delId[i], 1);
+	}
+	console.log("checkMusiciansAlive", delId, musicians);
+	setTimeout(checkMusiciansAlive, 1000);
 }
 
 var express = require('express');
@@ -69,3 +72,5 @@ app.get('/', function(req, res){
 
 app.listen(PORT, function(){
 });
+
+checkMusiciansAlive();
